@@ -1,6 +1,8 @@
 package com.yuansong.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,4 +75,12 @@ public class ResourceService {
 //		}
 //		return info.getData();
 //	}
+	
+	
+	public int addCustomer(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Customer/Add", mGson.toJson(data));
+		logger.debug(result);
+		return 0;
+	}
 }

@@ -53,7 +53,7 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customer","frm-ecs");
+    const frmList = new Array("frm-customerAddCode","frm-ecs");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -71,7 +71,6 @@ function choseMisType(id){
     $('#btnGroupMisType').val(id);
     $('#customerAddMistype').val(id);
 }
-
 
 function frmCustomerAddSubmit(frmurl){
 	$.ajax({
@@ -134,3 +133,16 @@ function frmCustomerAddSubmit(frmurl){
         }
     });
 }
+
+$("#reset-customer").click(function(){
+    console.log("reset customer");
+    $("#customerAddCode").val("");
+    $("#customerAddName").val("");
+    $("#customerAddDescription").val("");
+    $("#customerAddShowname").val("");
+    $("#customerAddSimplename").val("");
+    $("#customerAddPinyinname").val("");
+    choseMisType('请选择业务系统类型');
+    $("#customerAddMistype").val("");
+    $("#customerAddTongdcode").val("");
+});

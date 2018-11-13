@@ -125,7 +125,7 @@
             </div>
             <div class="form-group row">
                 <div class="col">
-                    <button type="button" class="btn btn-primary btn-block">Reset</button>
+                    <button id="reset-customer" type="button" class="btn btn-primary btn-block">Reset</button>
                 </div>
                 <div class="col">
                     <button id="submit-customer" type="button" class="btn btn-primary btn-block">Submit</button>
@@ -135,16 +135,7 @@
 
         <form id="frm-ecs" class="margin50 d-none">
             <div class="form-group row">
-                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail" placeholder="sfefsef">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Passwsfsefseord">
-                </div>
+                <span>123123</span>
             </div>
         </form>
     </div>
@@ -153,10 +144,6 @@
 <script src="${urlStr }"></script>
 <c:url var="urlStr" value="/Resource/Customer/Add" />
 <script type="text/javascript">
-
-	$("#reset-customer").click(function(){
-	    console.log("reset customer");
-	});
 	
 	$("#submit-customer").click(function(){
 	    console.log("submit customer");
