@@ -1,6 +1,8 @@
 package com.yuansong.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -11,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yuansong.global.Global;
 import com.yuansong.global.SystemConfig;
+import com.yuansong.resource.BaseResource;
+import com.yuansong.service.ResourceService;
 
 @Controller
 @RequestMapping(value="/")
@@ -20,6 +24,9 @@ public class RootController {
 	
 	@Autowired
 	private SystemConfig systemConfig;
+	
+	@Autowired
+	private ResourceService resourceService;
 	
 //	private Gson mGson = new Gson();
 	
@@ -54,6 +61,24 @@ public class RootController {
 	@RequestMapping(value="/DataMaintain")
 	public ModelAndView dataMaintain(Map<String, Object> model){
 		logger.debug("RootController dataMaintain");
+		Map<String, String> rData;
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		try {
+			Map<String, List<BaseResource>> data = resourceService.getBaseResourceList();
+			for(String key : data.keySet()) {
+				for(BaseResource resource : data.get(key)) {
+					rData = new HashMap<String, String>();
+					rData.put("type", key);
+					rData.put("name", resource.getName());
+					rData.put("description",resource.getDescription());
+					rData.put("id",resource.getId());
+					list.add(rData);
+				}
+			}
+		} catch (Exception e) {
+			return Global.getResponseData(-1, "获取资源列表时发生错误。【" + e.getMessage() + "】");
+		}
+		model.put("rlist",list);
 		return new ModelAndView("dataMaintainPage",model);
 	}
 	

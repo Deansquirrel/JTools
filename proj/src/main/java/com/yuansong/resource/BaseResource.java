@@ -1,6 +1,6 @@
 package com.yuansong.resource;
 
-public abstract class BaseResource {
+public class BaseResource {
 	
 	//资源ID
 	private String id;

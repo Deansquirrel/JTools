@@ -11,42 +11,37 @@
         </li>
     </ul>
     <div id="divList" class="d-none divide50">
-        <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">类型</th>
                     <th scope="col">名称</th>
-                    <th scope="col">显示名称</th>
                     <th scope="col">描述</th>
                     <th scope="col">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
+                <c:url var="urlStrDetail" value="/Resource/Customer/" />
+                <c:url var="urlStrDel" value="/Resource/Customer/Del/" />
+                <c:forEach var="rlist"  items="${rlist }">
+                	<tr>
+	                    <td>${rlist.type }</td>
+	                    <td>${rlist.name }</td>
+	                    <td>${rlist.description }</td>
+	                    <td>
+	                    	<div class="row">
+                        		<div class="col-3">
+                            		<a href="${urlStrDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+                        		</div>
+                        		<div class="col-3">
+                            		<a href="javascript:frmCustomerDelSubmit('${urlStrDel }' ,'${rlist.id }')"><span>删除</span></a>
+                        		</div>
+                    		</div>
+                    	</td>
+	                </tr>	
+                </c:forEach>
                 </tbody>
             </table>
-        </div>
     </div>
     <div id="divAdd" class="d-none divide50">
         <form class="margin50">
@@ -65,7 +60,7 @@
                 </div>
             </div>
         </form>
-        <form id="frm-customerAddCode" class="margin50 d-none">
+        <form id="frm-customerAdd" class="margin50 d-none">
             <div class="form-group row">
                 <label for="customerAddCode" class="col-sm-2 col-form-label">编码</label>
                 <div class="col-sm-10">
@@ -132,10 +127,83 @@
                 </div>
             </div>
         </form>
-
+		<form id="frm-customerDel" class="margin50 d-none">
+            <input id="customerDelId" type="hidden" name="customerDelId"/>
+        </form>
         <form id="frm-ecs" class="margin50 d-none">
             <div class="form-group row">
-                <span>123123</span>
+                <label for="ecsAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddName"  name ="ecsAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddDescription" name="ecsAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddInstanceID" class="col-sm-2 col-form-label">实例ID</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddInstanceID" name="ecsAddInstanceID" placeholder="实例ID">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddArea" class="col-sm-2 col-form-label">所在区</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddArea" name="ecsAddArea" placeholder="所在区">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddInternetIp" class="col-sm-2 col-form-label">外网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddInternetIp" name="ecsAddInternetIp" placeholder="外网IP">
+                </div>
+            </div>
+			<div class="form-group row">
+                <label for="ecsAddIntranetIp" class="col-sm-2 col-form-label">内网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddIntranetIp" name="ecsAddIntranetIp" placeholder="内网IP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddOs" class="col-sm-2 col-form-label">操作系统</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddOs" name="ecsAddOs" placeholder="操作系统">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddExpirationDate" class="col-sm-2 col-form-label">过期日期</label>
+                <div class="col-sm-10 input-group">
+                    <input type="text" class="form-control form_datetime" id="ecsAddExpirationDate"  name="ecsAddExpirationDate" placeholder="过期日期，格式如 2050-12-31">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddRDPPort" class="col-sm-2 col-form-label">远程桌面端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddRDPPort" name="ecsAddRDPPort" placeholder="远程桌面端口">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddLoginName" class="col-sm-2 col-form-label">用户名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddLoginName" name="ecsAddLoginName" placeholder="用户名">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecsAddLoginPwd" class="col-sm-2 col-form-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ecsAddLoginPwd" name="ecsAddLoginPwd" placeholder="密码">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-ecs" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-ecs" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
             </div>
         </form>
     </div>

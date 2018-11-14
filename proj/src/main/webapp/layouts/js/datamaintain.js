@@ -39,7 +39,8 @@ function addTypeChanged(id){
         case "customer":
             $("#btnGroupAddType").text("客户");
             divFormNone();
-            divFormBlock("frm-customerAddCode");
+            divFormBlock("frm-customerAdd");
+            $("#customerAddCode").focus();
             break;
         case "ecs":
             $("#btnGroupAddType").text("ECS");
@@ -53,7 +54,7 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customerAddCode","frm-ecs");
+    const frmList = new Array("frm-customerAdd","frm-ecs");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -77,7 +78,7 @@ function frmCustomerAddSubmit(frmurl){
         url:frmurl,
         type:"POST",
         cache:false,
-        data:$("#frm-customerAddCode").serialize(),
+        data:$("#frm-customerAdd").serialize(),
         beforeSend:function(){
             showLoading();
         },
@@ -96,12 +97,12 @@ function frmCustomerAddSubmit(frmurl){
                         allowEscapeKey:false,
                         allowOutsideClick:false
                     }).then(function(){
-                        pageInit();
+                    	resetFrm_CustomerAdd();
                     }).catch(swal.noop);
                 }
                 else{
                     swal({
-                        text:d.errDesc==""?("未知" + d.errcode):d.errDesc,
+                        text:d.errmsg==""?("未知" + d.errcode):d.errmsg,
                         type:"error",
                         confirmButtonText: '确定',
                         showCancelButton: false,
@@ -134,9 +135,73 @@ function frmCustomerAddSubmit(frmurl){
     });
 }
 
-$("#reset-customer").click(function(){
-    console.log("reset customer");
-    $("#customerAddCode").val("");
+
+function frmCustomerDelSubmit(frmurl, id){
+
+	$("#customerDelId").val(id);
+	$.ajax({
+        url:frmurl,
+        type:"POST",
+        cache:false,
+        data:$("#frm-customerDel").serialize(),
+        beforeSend:function(){
+            showLoading();
+        },
+        complete:function(){
+            // closeLoading();
+        },
+        success:function(data){
+            var d = JSON.parse(data);
+            if(d != null){
+                if(d.errcode == "0"){
+                    swal({
+                        text:"删除成功",
+                        type:"success",
+                        confirmButtonText: '确定',
+                        showCancelButton: false,
+                        allowEscapeKey:false,
+                        allowOutsideClick:false
+                    }).then(function(){
+                        location.reload();
+                    }).catch(swal.noop);
+                }
+                else{
+                    swal({
+                        text:d.errmsg==""?("未知" + d.errcode):d.errmsg,
+                        type:"error",
+                        confirmButtonText: '确定',
+                        showCancelButton: false,
+                        allowEscapeKey:false,
+                        allowOutsideClick:false
+                    }).catch(swal.noop);
+                }
+            }
+            else{
+                swal({
+                    text:"返回数据解析失败，请通过列表查询执行结果",
+                    type:"error",
+                    confirmButtonText: '确定',
+                    showCancelButton: false,
+                    allowEscapeKey:false,
+                    allowOutsideClick:false
+                }).catch(swal.noop);
+            }
+        },
+        error:function(){
+            swal({
+                text:"提交遇到错误，请通过列表查询执行结果",
+                type:"warning",
+                confirmButtonText: '确定',
+                showCancelButton: false,
+                allowEscapeKey:false,
+                allowOutsideClick:false
+            }).catch(swal.noop);
+        }
+    });
+} 
+
+function resetFrm_CustomerAdd(){
+	$("#customerAddCode").val("");
     $("#customerAddName").val("");
     $("#customerAddDescription").val("");
     $("#customerAddShowname").val("");
@@ -145,4 +210,11 @@ $("#reset-customer").click(function(){
     choseMisType('请选择业务系统类型');
     $("#customerAddMistype").val("");
     $("#customerAddTongdcode").val("");
+    $("#customerAddCode").focus();
+}
+
+$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd'});
+
+$("#reset-customer").click(function(){
+    resetFrm_CustomerAdd();
 });

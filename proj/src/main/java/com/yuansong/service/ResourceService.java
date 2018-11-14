@@ -1,6 +1,5 @@
 package com.yuansong.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yuansong.common.HttpUtils;
 import com.yuansong.form.InterfaceResult;
 import com.yuansong.global.SystemConfig;
+import com.yuansong.resource.BaseResource;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.RdsDbResource;
@@ -28,6 +28,73 @@ public class ResourceService {
 	
 	@Autowired
 	private SystemConfig systemConfig;
+	
+	/***
+	 * 获取资源信息摘要列表
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, List<BaseResource>> getBaseResourceList() throws Exception{
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/List");
+		InterfaceResult<Map<String, List<BaseResource>>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Map<String, List<BaseResource>>>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 添加用户
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addCustomer(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Customer/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除用户
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delCustomer(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Customer/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个信息列表
+	 * @param id
+	 * @return
+	 */
+	public CustomerResource getCustomerInfo(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Customer/" + id);
+		logger.debug(result);
+		InterfaceResult<CustomerResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<CustomerResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
 	
 	/***
 	 * 获取客户资源列表
@@ -77,10 +144,5 @@ public class ResourceService {
 //	}
 	
 	
-	public int addCustomer(Map<String, String> data) throws Exception {
-		logger.debug(mGson.toJson(data));
-		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Customer/Add", mGson.toJson(data));
-		logger.debug(result);
-		return 0;
-	}
+
 }
