@@ -16,6 +16,8 @@ public class EcsResource extends BaseResource {
 	private String os;
 	//过期日期
 	private Date expirationDate;
+	//远程桌面端口
+	private int rdpPort;
 	//操作系统登录名
 	private String loginName;
 	//操作系统登录密码
@@ -68,6 +70,12 @@ public class EcsResource extends BaseResource {
 	}
 	public void setInstanceID(String instanceID) {
 		this.instanceID = instanceID;
+	}
+	public int getRdpPort() {
+		return rdpPort;
+	}
+	public void setRdpPort(int rdpPort) {
+		this.rdpPort = rdpPort;
 	}
 
 }

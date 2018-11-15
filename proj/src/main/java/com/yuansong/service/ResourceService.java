@@ -15,6 +15,7 @@ import com.yuansong.global.SystemConfig;
 import com.yuansong.resource.BaseResource;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
+import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.RdsDbResource;
 
 @Service
@@ -80,11 +81,11 @@ public class ResourceService {
 	}
 	
 	/***
-	 * 获取单个信息列表
+	 * 获取单个用户信息
 	 * @param id
 	 * @return
 	 */
-	public CustomerResource getCustomerInfo(String id)  throws Exception {
+	public CustomerResource getCustomer(String id)  throws Exception {
 		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Customer/" + id);
 		logger.debug(result);
 		InterfaceResult<CustomerResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<CustomerResource>>(){}.getType());
@@ -94,7 +95,6 @@ public class ResourceService {
 		}
 		return info.getData();
 	}
-	
 	
 	/***
 	 * 获取客户资源列表
@@ -110,6 +110,59 @@ public class ResourceService {
 		}
 		return info.getData();
 	}
+	
+	/***
+	 * 添加ECS
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addEcs(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Ecs/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除ECS
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delEcs(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Ecs/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个Ecs信息
+	 * @param id
+	 * @return
+	 */
+	public EcsResource getEcs(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Ecs/" + id);
+		logger.debug(result);
+		InterfaceResult<EcsResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<EcsResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	
 	
 	public RdsDbResource getRds(String id) throws Exception{
 		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Rds/" + id);

@@ -21,8 +21,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:url var="urlStrDetail" value="/Resource/Customer/" />
-                <c:url var="urlStrDel" value="/Resource/Customer/Del/" />
+                <c:url var="urlStrCustomerDetail" value="/Resource/Customer/" />
+                <c:url var="urlStrCustomerDel" value="/Resource/Customer/Del/" />
+                <c:url var="urlStrEcsDetail" value="/Resource/Ecs/" />
+                <c:url var="urlStrEcsDel" value="/Resource/Ecs/Del/" />
                 <c:forEach var="rlist"  items="${rlist }">
                 	<tr>
 	                    <td>${rlist.type }</td>
@@ -30,12 +32,24 @@
 	                    <td>${rlist.description }</td>
 	                    <td>
 	                    	<div class="row">
-                        		<div class="col-3">
-                            		<a href="${urlStrDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
-                        		</div>
-                        		<div class="col-3">
-                            		<a href="javascript:frmCustomerDelSubmit('${urlStrDel }' ,'${rlist.id }')"><span>删除</span></a>
-                        		</div>
+	                    		<c:choose>
+	                    			<c:when test="${rlist.type == 'Customer' }">
+	                    				<div class="col-3">
+		                            		<a href="${urlStrCustomerDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+		                        		</div>
+		                        		<div class="col-3">
+		                            		<a href="javascript:frmDelSubmit('${urlStrCustomerDel }' ,'${rlist.id }')"><span>删除</span></a>
+		                        		</div>
+	                    			</c:when>
+	                    			<c:when test="${rlist.type == 'ECS' }">
+	                    				<div class="col-3">
+		                            		<a href="${urlStrEcsDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+		                        		</div>
+		                        		<div class="col-3">
+		                            		<a href="javascript:frmDelSubmit('${urlStrEcsDel }' ,'${rlist.id }')"><span>删除</span></a>
+		                        		</div>
+	                    			</c:when>
+	                    		</c:choose>
                     		</div>
                     	</td>
 	                </tr>	
@@ -62,12 +76,6 @@
         </form>
         <form id="frm-customerAdd" class="margin50 d-none">
             <div class="form-group row">
-                <label for="customerAddCode" class="col-sm-2 col-form-label">编码</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="customerAddCode" name="customerAddCode" placeholder="编码">
-                </div>
-            </div>
-            <div class="form-group row">
                 <label for="customerAddName" class="col-sm-2 col-form-label">名称</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="customerAddName"  name ="customerAddName" placeholder="名称">
@@ -77,6 +85,12 @@
                 <label for="customerAddDescription" class="col-sm-2 col-form-label">描述</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="customerAddDescription" name="customerAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="customerAddCode" class="col-sm-2 col-form-label">编码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="customerAddCode" name="customerAddCode" placeholder="编码">
                 </div>
             </div>
             <div class="form-group row">
@@ -127,10 +141,10 @@
                 </div>
             </div>
         </form>
-		<form id="frm-customerDel" class="margin50 d-none">
-            <input id="customerDelId" type="hidden" name="customerDelId"/>
+		<form id="frm-del" class="margin50 d-none">
+            <input id="delId" type="hidden" name="delId"/>
         </form>
-        <form id="frm-ecs" class="margin50 d-none">
+        <form id="frm-ecsAdd" class="margin50 d-none">
             <div class="form-group row">
                 <label for="ecsAddName" class="col-sm-2 col-form-label">名称</label>
                 <div class="col-sm-10">
@@ -182,7 +196,7 @@
             <div class="form-group row">
                 <label for="ecsAddRDPPort" class="col-sm-2 col-form-label">远程桌面端口</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="ecsAddRDPPort" name="ecsAddRDPPort" placeholder="远程桌面端口">
+                    <input type="text" class="form-control" id="ecsAddRDPPort" name="ecsAddRDPPort" placeholder="远程桌面端口，操作系统默认3389">
                 </div>
             </div>
             <div class="form-group row">
@@ -210,12 +224,17 @@
 </div>
 <c:url var="urlStr" value="/layouts/js/datamaintain.js" />
 <script src="${urlStr }"></script>
-<c:url var="urlStr" value="/Resource/Customer/Add" />
+<c:url var="urlStrCustomerAdd" value="/Resource/Customer/Add" />
+<c:url var="urlStrEcsAdd" value="/Resource/Ecs/Add" />
 <script type="text/javascript">
 	
 	$("#submit-customer").click(function(){
-	    console.log("submit customer");
-	    frmCustomerAddSubmit("${urlStr }");
+	    frmAddSubmit("${urlStrCustomerAdd }","frm-customerAdd","customer");
+	});
+	
+	$("#submit-ecs").click(function(){
+	    console.log("submit ecs");
+	    frmAddSubmit("${urlStrEcsAdd }","frm-ecsAdd","ecs");
 	});
 	
 	topMenuNone();

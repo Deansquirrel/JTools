@@ -40,12 +40,13 @@ function addTypeChanged(id){
             $("#btnGroupAddType").text("客户");
             divFormNone();
             divFormBlock("frm-customerAdd");
-            $("#customerAddCode").focus();
+            $("#customerAddName").focus();
             break;
         case "ecs":
             $("#btnGroupAddType").text("ECS");
             divFormNone();
-            divFormBlock("frm-ecs");
+            divFormBlock("frm-ecsAdd");
+            $("#ecsAddName").focus();
             break;
          default:
              console.log("error");
@@ -54,7 +55,7 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customerAdd","frm-ecs");
+    const frmList = new Array("frm-customerAdd","frm-ecsAdd");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -73,12 +74,14 @@ function choseMisType(id){
     $('#customerAddMistype').val(id);
 }
 
-function frmCustomerAddSubmit(frmurl){
+
+
+function frmAddSubmit(frmurl,frmname,type){
 	$.ajax({
         url:frmurl,
         type:"POST",
         cache:false,
-        data:$("#frm-customerAdd").serialize(),
+        data:$("#"+frmname).serialize(),
         beforeSend:function(){
             showLoading();
         },
@@ -87,6 +90,7 @@ function frmCustomerAddSubmit(frmurl){
         },
         success:function(data){
             var d = JSON.parse(data);
+            console.log(data)
             if(d != null){
                 if(d.errcode == "0"){
                     swal({
@@ -97,12 +101,19 @@ function frmCustomerAddSubmit(frmurl){
                         allowEscapeKey:false,
                         allowOutsideClick:false
                     }).then(function(){
-                    	resetFrm_CustomerAdd();
+                    	switch(type){
+	                    	case "customer":
+	                    		resetFrm_CustomerAdd();
+	                    		break;
+	                    	case "ecs":
+	                    		resetFrm_EcsAdd();
+	                    		break;
+                    	}
                     }).catch(swal.noop);
                 }
                 else{
                     swal({
-                        text:d.errmsg==""?("未知" + d.errcode):d.errmsg,
+                        text:d.errmsg==""?("未知错误【" + d.errcode + "】"):d.errmsg,
                         type:"error",
                         confirmButtonText: '确定',
                         showCancelButton: false,
@@ -136,14 +147,14 @@ function frmCustomerAddSubmit(frmurl){
 }
 
 
-function frmCustomerDelSubmit(frmurl, id){
+function frmDelSubmit(frmurl, id){
 
-	$("#customerDelId").val(id);
+	$("#delId").val(id);
 	$.ajax({
         url:frmurl,
         type:"POST",
         cache:false,
-        data:$("#frm-customerDel").serialize(),
+        data:$("#frm-del").serialize(),
         beforeSend:function(){
             showLoading();
         },
@@ -210,11 +221,28 @@ function resetFrm_CustomerAdd(){
     choseMisType('请选择业务系统类型');
     $("#customerAddMistype").val("");
     $("#customerAddTongdcode").val("");
-    $("#customerAddCode").focus();
+    $("#customerAddName").focus();
 }
 
-$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd'});
+function resetFrm_EcsAdd(){
+	$("#ecsAddName").val("");
+    $("#ecsAddDescription").val("");
+    $("#ecsAddInstanceID").val("");
+    $("#ecsAddArea").val("");
+    $("#ecsAddInternetIp").val("");
+    $("#ecsAddIntranetIp").val("");
+    $("#ecsAddOs").val("");
+    $("#ecsAddExpirationDate").val("");
+    $("#ecsAddRDPPort").val("");
+    $("#ecsAddLoginName").val("");
+    $("#ecsAddLoginPwd").val("");
+    $("#ecsAddName").focus();
+}
 
 $("#reset-customer").click(function(){
     resetFrm_CustomerAdd();
+});
+
+$("#reset-ecs").click(function(){
+	resetFrm_EcsAdd();
 });
