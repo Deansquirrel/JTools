@@ -16,6 +16,7 @@ import com.yuansong.resource.BaseResource;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
+import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.resource.RdsDbResource;
 
 @Service
@@ -161,6 +162,119 @@ public class ResourceService {
 		}
 		return info.getData();
 	}
+	
+	/***
+	 * 添加普通数据库
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addCommonDb(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/CommonDb/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除普通数据库
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delCommonDb(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/CommonDb/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个CommonDb信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public CommonDbResource getCommonDb(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/CommonDb/" + id);
+		logger.debug(result);
+		InterfaceResult<CommonDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<CommonDbResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 添加ExceptionLess
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addExceptionLess(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/ExceptionLess/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除ExceptionLess
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delExceptionLess(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/ExceptionLess/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个ExceptionLess信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public ExceptionlessResource getExceptionLess(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/ExceptionLess/" + id);
+		logger.debug(result);
+		InterfaceResult<ExceptionlessResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<ExceptionlessResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

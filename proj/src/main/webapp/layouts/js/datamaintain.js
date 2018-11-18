@@ -48,6 +48,18 @@ function addTypeChanged(id){
             divFormBlock("frm-ecsAdd");
             $("#ecsAddName").focus();
             break;
+        case "commondb":
+            $("#btnGroupAddType").text("数据库（普通）");
+            divFormNone();
+            divFormBlock("frm-commonDbAdd");
+            $("#commonDbAddName").focus();
+            break;
+        case "exceptionless":
+            $("#btnGroupAddType").text("ExceptionLess");
+            divFormNone();
+            divFormBlock("frm-exceptionless");
+            $("#exceptionlessAddName").focus();
+            break;
          default:
              console.log("error");
     }
@@ -55,7 +67,7 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customerAdd","frm-ecsAdd");
+    const frmList = new Array("frm-customerAdd","frm-ecsAdd","frm-commonDbAdd","frm-exceptionless");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -107,6 +119,12 @@ function frmAddSubmit(frmurl,frmname,type){
 	                    		break;
 	                    	case "ecs":
 	                    		resetFrm_EcsAdd();
+	                    		break;
+	                    	case "commondb":
+	                    		resetFrm_CommonDbAdd();
+	                    		break;
+	                    	case "exceptionless":
+	                    		resetFrm_ExceptionLessAdd();
 	                    		break;
                     	}
                     }).catch(swal.noop);
@@ -239,10 +257,38 @@ function resetFrm_EcsAdd(){
     $("#ecsAddName").focus();
 }
 
+function resetFrm_CommonDbAdd(){
+	$("#commonDbAddName").val("");
+    $("#commonDbAddDescription").val("");
+    $("#commonDbAddDbName").val("");
+    $("#commonDbAddDbUser").val("");
+    $("#commonDbAddDbPwd").val("");
+    $("#commonDbAddAddress").val("");
+    $("#commonDbAddPort").val("");
+	$("#commonDbAddName").focus();
+}
+
+function resetFrm_ExceptionLessAdd(){
+	$("#exceptionlessAddName").val("");
+    $("#exceptionlessAddDescription").val("");
+    $("#exceptionlessAddUrl").val("");
+    $("#exceptionlessAddLoginName").val("");
+    $("#exceptionlessAddLoginPwd").val("");
+	$("#exceptionlessAddName").focus();
+}
+
 $("#reset-customer").click(function(){
     resetFrm_CustomerAdd();
 });
 
 $("#reset-ecs").click(function(){
 	resetFrm_EcsAdd();
+});
+
+$("#reset-commondb").click(function(){
+	resetFrm_CommonDbAdd();
+});
+
+$("#reset-exceptionless").click(function(){
+	resetFrm_ExceptionLessAdd();
 });

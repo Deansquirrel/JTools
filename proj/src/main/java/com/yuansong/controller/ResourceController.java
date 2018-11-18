@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.yuansong.common.DateTool;
 import com.yuansong.global.Global;
+import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
+import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -122,8 +124,14 @@ public class ResourceController {
 		try {
 			Date d = DateTool.getDateFromStr(expirationDate, "yyyy-MM-dd");
 			expirationDate = DateTool.getDateStr(d, "yyyy-MM-dd");
-			int port = Integer.valueOf(rdpPort);
-			rdpPort = String.valueOf(port);
+			if(rdpPort.trim().equals("")) {
+				rdpPort = "3389";
+			}
+			else {
+				int port = Integer.valueOf(rdpPort);
+				rdpPort = String.valueOf(port);
+			}
+			
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			logger.error(ex.getMessage());
@@ -189,5 +197,151 @@ public class ResourceController {
 		return new ModelAndView("responsePage", model);
 	}
 	
+	
+	@Transactional
+	@RequestMapping(value="/CommonDb/Add",method=RequestMethod.POST)
+	public ModelAndView commonDbAddAction(
+			@RequestParam("commonDbAddName") String name,
+			@RequestParam("commonDbAddDescription") String description,
+			@RequestParam("commonDbAddDbName") String dbName,
+			@RequestParam("commonDbAddDbUser") String dbUser,
+			@RequestParam("commonDbAddDbPwd") String dbPwd,
+			@RequestParam("commonDbAddAddress") String address,
+			@RequestParam("commonDbAddPort") String port,
+			Map<String, Object> model) {
+				
+		try {
+			if(port.trim().equals("")) {
+				port = "1433";
+			}
+			else {
+				int iport = Integer.valueOf(port);
+				port = String.valueOf(iport);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());	
+		}
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("dbName", dbName);
+		data.put("dbUser", dbUser);
+		data.put("dbPwd", dbPwd);
+		data.put("address", address);
+		data.put("port", port);
+		
+		try {
+			resourceService.addCommonDb(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/CommonDb/Del",method=RequestMethod.POST)
+	public ModelAndView commonDbDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delCommonDb(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/CommonDb/{id}",method=RequestMethod.GET)
+	public ModelAndView commonDbDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		CommonDbResource resource = null;
+		try{
+			resource = resourceService.getCommonDb(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
 
+	
+	
+	@Transactional
+	@RequestMapping(value="/ExceptionLess/Add",method=RequestMethod.POST)
+	public ModelAndView exceptionLessAddAction(
+			@RequestParam("exceptionlessAddName") String name,
+			@RequestParam("exceptionlessAddDescription") String description,
+			@RequestParam("exceptionlessAddUrl") String url,
+			@RequestParam("exceptionlessAddLoginName") String loginName,
+			@RequestParam("exceptionlessAddLoginPwd") String loginPwd,
+			Map<String, Object> model) {
+				
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("url", url);
+		data.put("loginName", loginName);
+		data.put("loginPwd", loginPwd);
+		
+		try {
+			resourceService.addExceptionLess(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	
+	@Transactional
+	@RequestMapping(value="/ExceptionLess/Del",method=RequestMethod.POST)
+	public ModelAndView exceptionLessDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delExceptionLess(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/ExceptionLess/{id}",method=RequestMethod.GET)
+	public ModelAndView exceptionLessDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		ExceptionlessResource resource = null;
+		try{
+			resource = resourceService.getExceptionLess(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
 }
