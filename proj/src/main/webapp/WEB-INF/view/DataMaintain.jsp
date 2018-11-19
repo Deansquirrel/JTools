@@ -20,67 +20,87 @@
         <c:url var="urlStrCommonDbDel" value="/Resource/CommonDb/Del/" />
         <c:url var="urlStrExceptionLessDetail" value="/Resource/ExceptionLess/" />
         <c:url var="urlStrExceptionLessDel" value="/Resource/ExceptionLess/Del/" />
+        <c:url var="urlStrMongoDBDetail" value="/Resource/MongoDB/" />
+        <c:url var="urlStrMongoDBDel" value="/Resource/MongoDB/Del/" />
+        <c:url var="urlStrRabbitMQDetail" value="/Resource/RabbitMQ/" />
+        <c:url var="urlStrRabbitMQDel" value="/Resource/RabbitMQ/Del/" />
  
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">类型</th>
-                    <th scope="col">名称</th>
-                    <th scope="col">描述</th>
-                    <th scope="col">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                
-                <c:forEach var="rlist"  items="${rlist }">
-                	<tr>
-	                    <td>
-	                    	<div>${rlist.type }</div>
-	                    </td>
-	                    <td>${rlist.name }</td>
-	                    <td>${rlist.description }</td>
-	                    <td>
-	                    	<div class="row">
-	                    		<c:choose>
-	                    			<c:when test="${rlist.type == 'Customer' }">
-	                    				<div class="col">
-		                            		<a href="${urlStrCustomerDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
-		                        		</div>
-		                        		<div class="col">
-		                            		<a href="javascript:frmDelSubmit('${urlStrCustomerDel }' ,'${rlist.id }')"><span>删除</span></a>
-		                        		</div>
-	                    			</c:when>
-	                    			<c:when test="${rlist.type == 'ECS' }">
-	                    				<div class="col">
-		                            		<a href="${urlStrEcsDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
-		                        		</div>
-		                        		<div class="col">
-		                            		<a href="javascript:frmDelSubmit('${urlStrEcsDel }' ,'${rlist.id }')"><span>删除</span></a>
-		                        		</div>
-	                    			</c:when>
-	                    			<c:when test="${rlist.type == 'CommonDb' }">
-	                    				<div class="col">
-		                            		<a href="${urlStrCommonDbDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
-		                        		</div>
-		                        		<div class="col">
-		                            		<a href="javascript:frmDelSubmit('${urlStrCommonDbDel }' ,'${rlist.id }')"><span>删除</span></a>
-		                        		</div>
-	                    			</c:when>
-	                    			<c:when test="${rlist.type == 'ExceptionLess' }">
-	                    				<div class="col">
-		                            		<a href="${urlStrExceptionLessDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
-		                        		</div>
-		                        		<div class="col">
-		                            		<a href="javascript:frmDelSubmit('${urlStrExceptionLessDel }' ,'${rlist.id }')"><span>删除</span></a>
-		                        		</div>
-	                    			</c:when>
-	                    		</c:choose>
-                    		</div>
-                    	</td>
-	                </tr>	
-                </c:forEach>
-                </tbody>
-            </table>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">类型</th>
+                <th scope="col">名称</th>
+                <th scope="col">描述</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            <c:forEach var="rlist"  items="${rlist }">
+            	<tr>
+                 <td>
+                 	<div>${rlist.type }</div>
+                 </td>
+                 <td>${rlist.name }</td>
+                 <td>${rlist.description }</td>
+                 <td>
+                 	<div class="row">
+                 		<c:choose>
+                 			<c:when test="${rlist.type == 'Customer' }">
+                 				<div class="col">
+	                          		<a href="${urlStrCustomerDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrCustomerDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'ECS' }">
+                 				<div class="col">
+	                          		<a href="${urlStrEcsDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrEcsDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'CommonDb' }">
+                 				<div class="col">
+	                          		<a href="${urlStrCommonDbDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrCommonDbDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'ExceptionLess' }">
+                 				<div class="col">
+	                          		<a href="${urlStrExceptionLessDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrExceptionLessDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'MongoDB' }">
+                 				<div class="col">
+	                          		<a href="${urlStrMongoDBDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrMongoDBDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'RabbitMQ' }">
+                 				<div class="col">
+	                          		<a href="${urlStrRabbitMQDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrRabbitMQDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 		</c:choose>
+                		</div>
+                	</td>
+             </tr>	
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
     <div id="divAdd" class="d-none divide50">
         <form class="margin50">
@@ -96,6 +116,8 @@
                             <a class="dropdown-item" href="javascript:addTypeChanged('ecs')">ECS</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('commondb')">数据库（普通）</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('exceptionless')">ExceptionLess</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('mongodb')">MongoDB</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('rabbitmq')">RabbitMQ</a>
                         </div>
                     </div>
                 </div>
@@ -339,6 +361,110 @@
                 </div>
             </div>
         </form>
+    	<form id="frm-mongodb" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="mongodbAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddName"  name ="mongodbAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mongodbAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddDescription" name="mongodbAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mongodbAddInternetIp" class="col-sm-2 col-form-label">外网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddInternetIp" name="mongodbAddInternetIp" placeholder="外网IP">
+                </div>
+            </div>
+			<div class="form-group row">
+                <label for="mongodbAddIntranetIp" class="col-sm-2 col-form-label">内网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddIntranetIp" name="mongodbAddIntranetIp" placeholder="内网IP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mongodbAddPort" class="col-sm-2 col-form-label">端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddPort" name="mongodbAddPort" placeholder="端口，默认27017">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mongodbAddLoginName" class="col-sm-2 col-form-label">登录名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddLoginName" name="mongodbAddLoginName" placeholder="登录名">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mongodbAddLoginPwd" class="col-sm-2 col-form-label">登录密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="mongodbAddLoginPwd" name="mongodbAddLoginPwd" placeholder="登录密码">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-mongodb" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-mongodb" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
+    	<form id="frm-rabbitmq" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="mongodbAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddName"  name ="rabbitmqAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rabbitmqAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddDescription" name="rabbitmqAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rabbitmqAddInternetIp" class="col-sm-2 col-form-label">外网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddInternetIp" name="rabbitmqAddInternetIp" placeholder="外网IP">
+                </div>
+            </div>
+			<div class="form-group row">
+                <label for="rabbitmqAddIntranetIp" class="col-sm-2 col-form-label">内网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddIntranetIp" name="rabbitmqAddIntranetIp" placeholder="内网IP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rabbitmqAddPort" class="col-sm-2 col-form-label">端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddPort" name="rabbitmqAddPort" placeholder="端口，默认27017">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rabbitmqAddLoginName" class="col-sm-2 col-form-label">登录名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddLoginName" name="rabbitmqAddLoginName" placeholder="登录名">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rabbitmqAddLoginPwd" class="col-sm-2 col-form-label">登录密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rabbitmqAddLoginPwd" name="rabbitmqAddLoginPwd" placeholder="登录密码">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-rabbitmq" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-rabbitmq" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <c:url var="urlStr" value="/layouts/js/datamaintain.js" />
@@ -347,6 +473,8 @@
 <c:url var="urlStrEcsAdd" value="/Resource/Ecs/Add" />
 <c:url var="urlStrCommonDbAdd" value="/Resource/CommonDb/Add" />
 <c:url var="urlStrExceptionLessAdd" value="/Resource/ExceptionLess/Add" />
+<c:url var="urlStrMongoDBAdd" value="/Resource/MongoDB/Add" />
+<c:url var="urlStrRabbitMQAdd" value="/Resource/RabbitMQ/Add" />
 <script type="text/javascript">
 	
 	$("#submit-customer").click(function(){
@@ -354,18 +482,23 @@
 	});
 	
 	$("#submit-ecs").click(function(){
-	    console.log("submit ecs");
 	    frmAddSubmit("${urlStrEcsAdd }","frm-ecsAdd","ecs");
 	});
 	
 	$("#submit-commondb").click(function(){
-	    console.log("submit ecs");
 	    frmAddSubmit("${urlStrCommonDbAdd }","frm-commonDbAdd","commondb");
 	});
 	
 	$("#submit-exceptionless").click(function(){
-	    console.log("submit ecs");
 	    frmAddSubmit("${urlStrExceptionLessAdd }","frm-exceptionless","exceptionless");
+	});
+	
+	$("#submit-mongodb").click(function(){
+	    frmAddSubmit("${urlStrMongoDBAdd }","frm-mongodb","mongodb");
+	});
+	
+	$("#submit-rabbitmq").click(function(){
+	    frmAddSubmit("${urlStrRabbitMQAdd }","frm-rabbitmq","rabbitmq");
 	});
 	
 	topMenuNone();

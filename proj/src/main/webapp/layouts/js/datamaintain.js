@@ -60,6 +60,18 @@ function addTypeChanged(id){
             divFormBlock("frm-exceptionless");
             $("#exceptionlessAddName").focus();
             break;
+        case "mongodb":
+            $("#btnGroupAddType").text("MongoDB");
+            divFormNone();
+            divFormBlock("frm-mongodb");
+            $("#mongodbAddName").focus();
+            break;
+        case "rabbitmq":
+            $("#btnGroupAddType").text("RabbitMQ");
+            divFormNone();
+            divFormBlock("frm-rabbitmq");
+            $("#rabbitmqAddName").focus();
+            break;
          default:
              console.log("error");
     }
@@ -67,7 +79,7 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customerAdd","frm-ecsAdd","frm-commonDbAdd","frm-exceptionless");
+    const frmList = new Array("frm-customerAdd","frm-ecsAdd","frm-commonDbAdd","frm-exceptionless","frm-mongodb");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -125,6 +137,12 @@ function frmAddSubmit(frmurl,frmname,type){
 	                    		break;
 	                    	case "exceptionless":
 	                    		resetFrm_ExceptionLessAdd();
+	                    		break;
+	                    	case "mongodb":
+	                    		resetFrm_MongoDBAdd();
+	                    		break;
+	                    	case "rabbitmq":
+	                    		resetFrm_RabbitMQAdd();
 	                    		break;
                     	}
                     }).catch(swal.noop);
@@ -277,6 +295,28 @@ function resetFrm_ExceptionLessAdd(){
 	$("#exceptionlessAddName").focus();
 }
 
+function resetFrm_MongoDBAdd(){
+	$("#mongodbAddName").val("");
+    $("#mongodbAddDescription").val("");
+    $("#mongodbAddInternetIp").val("");
+    $("#mongodbAddIntranetIp").val("");
+    $("#mongodbAddPort").val("");
+    $("#mongodbAddLoginName").val("");
+    $("#mongodbAddLoginPwd").val("");
+	$("#mongodbAddName").focus();
+}
+
+function resetFrm_RabbitMQAdd(){
+	$("#rabbitmqAddName").val("");
+    $("#rabbitmqAddDescription").val("");
+    $("#rabbitmqAddInternetIp").val("");
+    $("#rabbitmqAddIntranetIp").val("");
+    $("#rabbitmqAddPort").val("");
+    $("#rabbitmqAddLoginName").val("");
+    $("#rabbitmqAddLoginPwd").val("");
+	$("#rabbitmqAddName").focus();
+}
+
 $("#reset-customer").click(function(){
     resetFrm_CustomerAdd();
 });
@@ -291,4 +331,12 @@ $("#reset-commondb").click(function(){
 
 $("#reset-exceptionless").click(function(){
 	resetFrm_ExceptionLessAdd();
+});
+
+$("#reset-mongodb").click(function(){
+	resetFrm_MongoDBAdd();
+});
+
+$("#reset-rabbitmq").click(function(){
+	resetFrm_RabbitMQAdd();
 });

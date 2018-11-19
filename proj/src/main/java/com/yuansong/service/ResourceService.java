@@ -17,6 +17,8 @@ import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
+import com.yuansong.resource.MongoDBResource;
+import com.yuansong.resource.RabbitMQResource;
 import com.yuansong.resource.RdsDbResource;
 
 @Service
@@ -267,7 +269,111 @@ public class ResourceService {
 		return info.getData();
 	}
 	
+
+	/***
+	 * 添加MongoDB
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addMongoDB(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/MongoDB/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
 	
+	/***
+	 * 删除MongoDB
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delMongoDB(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/MongoDB/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个MongoDB信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public MongoDBResource getMongoDB(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/MongoDB/" + id);
+		logger.debug(result);
+		InterfaceResult<MongoDBResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<MongoDBResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+
+	/***
+	 * 添加RabbitMQ
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addRabbitMQ(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/RabbitMQ/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除RabbitMQ
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delRabbitMQ(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/RabbitMQ/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个RabbitMQ信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public RabbitMQResource getRabbitMQ(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/RabbitMQ/" + id);
+		logger.debug(result);
+		InterfaceResult<RabbitMQResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RabbitMQResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
 	
 	
 	

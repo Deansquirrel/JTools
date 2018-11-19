@@ -21,6 +21,8 @@ import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
+import com.yuansong.resource.MongoDBResource;
+import com.yuansong.resource.RabbitMQResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -197,7 +199,6 @@ public class ResourceController {
 		return new ModelAndView("responsePage", model);
 	}
 	
-	
 	@Transactional
 	@RequestMapping(value="/CommonDb/Add",method=RequestMethod.POST)
 	public ModelAndView commonDbAddAction(
@@ -279,8 +280,6 @@ public class ResourceController {
 		return new ModelAndView("responsePage", model);
 	}
 
-	
-	
 	@Transactional
 	@RequestMapping(value="/ExceptionLess/Add",method=RequestMethod.POST)
 	public ModelAndView exceptionLessAddAction(
@@ -308,7 +307,6 @@ public class ResourceController {
 		
 		return Global.getResponseData(0, "");
 	}
-	
 	
 	@Transactional
 	@RequestMapping(value="/ExceptionLess/Del",method=RequestMethod.POST)
@@ -344,4 +342,169 @@ public class ResourceController {
 		}
 		return new ModelAndView("responsePage", model);
 	}
+
+	@Transactional
+	@RequestMapping(value="/MongoDB/Add",method=RequestMethod.POST)
+	public ModelAndView mongodbAddAction(
+			@RequestParam("mongodbAddName") String name,
+			@RequestParam("mongodbAddDescription") String description,
+			@RequestParam("mongodbAddInternetIp") String internetIp,
+			@RequestParam("mongodbAddIntranetIp") String intranetIp,
+			@RequestParam("mongodbAddPort") String port,
+			@RequestParam("mongodbAddLoginName") String loginName,
+			@RequestParam("mongodbAddLoginPwd") String loginPwd,
+			Map<String, Object> model) {
+		
+		
+		try {
+			if(port.trim().equals("")) {
+				port = "27017";
+			}
+			else {
+				int iport = Integer.valueOf(port);
+				port = String.valueOf(iport);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());	
+		}
+				
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("internetIp", internetIp);
+		data.put("intranetIp", intranetIp);
+		data.put("port", port);
+		data.put("loginName", loginName);
+		data.put("loginPwd", loginPwd);
+		
+		try {
+			resourceService.addMongoDB(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/MongoDB/Del",method=RequestMethod.POST)
+	public ModelAndView mongoDBDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delMongoDB(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/MongoDB/{id}",method=RequestMethod.GET)
+	public ModelAndView mongoDBDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		MongoDBResource resource = null;
+		try{
+			resource = resourceService.getMongoDB(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
+
+	@Transactional
+	@RequestMapping(value="/RabbitMQ/Add",method=RequestMethod.POST)
+	public ModelAndView rabbitmqAddAction(
+			@RequestParam("rabbitmqAddName") String name,
+			@RequestParam("rabbitmqAddDescription") String description,
+			@RequestParam("rabbitmqAddInternetIp") String internetIp,
+			@RequestParam("rabbitmqAddIntranetIp") String intranetIp,
+			@RequestParam("rabbitmqAddPort") String port,
+			@RequestParam("rabbitmqAddLoginName") String loginName,
+			@RequestParam("rabbitmqAddLoginPwd") String loginPwd,
+			Map<String, Object> model) {
+		
+		
+		try {
+			if(port.trim().equals("")) {
+				port = "5672";
+			}
+			else {
+				int iport = Integer.valueOf(port);
+				port = String.valueOf(iport);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());	
+		}
+				
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("internetIp", internetIp);
+		data.put("intranetIp", intranetIp);
+		data.put("port", port);
+		data.put("loginName", loginName);
+		data.put("loginPwd", loginPwd);
+		
+		try {
+			resourceService.addRabbitMQ(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/RabbitMQ/Del",method=RequestMethod.POST)
+	public ModelAndView rabbitmqDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delRabbitMQ(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/RabbitMQ/{id}",method=RequestMethod.GET)
+	public ModelAndView rabbitmqDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		RabbitMQResource resource = null;
+		try{
+			resource = resourceService.getRabbitMQ(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
+
 }
