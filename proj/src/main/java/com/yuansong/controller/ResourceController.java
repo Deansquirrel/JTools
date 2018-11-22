@@ -23,6 +23,9 @@ import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.resource.MongoDBResource;
 import com.yuansong.resource.RabbitMQResource;
+import com.yuansong.resource.RdsDbResource;
+import com.yuansong.resource.RdsResource;
+import com.yuansong.resource.RedisResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -200,6 +203,103 @@ public class ResourceController {
 	}
 	
 	@Transactional
+	@RequestMapping(value="/Rds/Add",method=RequestMethod.POST)
+	public ModelAndView rdsAddAction(
+			@RequestParam("rdsAddName") String name,
+			@RequestParam("rdsAddDescription") String description,
+			@RequestParam("rdsAddInstanceID") String instanceID,
+			@RequestParam("rdsAddArea") String area,
+			@RequestParam("rdsAddDbType") String dbType,
+			@RequestParam("rdsAddInternetIp") String internetIp,
+			@RequestParam("rdsAddInternetPort") String internetPort,
+			@RequestParam("rdsAddIntranetIp") String intranetIp,
+			@RequestParam("rdsAddIntranetPort") String intranetPort,
+			@RequestParam("rdsAddExpirationDate") String expirationDate,
+			Map<String, Object> model) {
+		
+		try {
+			Date d = DateTool.getDateFromStr(expirationDate, "yyyy-MM-dd");
+			expirationDate = DateTool.getDateStr(d, "yyyy-MM-dd");
+			if(internetPort.trim().equals("")) {
+				internetPort = "3433";
+			}
+			else {
+				int port = Integer.valueOf(internetPort);
+				internetPort = String.valueOf(port);
+			}
+			if(intranetPort.trim().equals("")) {
+				intranetPort = "3433";
+			}
+			else {
+				int port = Integer.valueOf(intranetPort);
+				intranetPort = String.valueOf(port);
+			}
+			
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());	
+		}
+		
+		Map<String, String> data = new HashMap<String, String>();		
+		data.put("name", name);
+		data.put("description", description);
+		data.put("instanceID", instanceID);
+		data.put("area", area);
+		data.put("dbType", dbType);
+		data.put("internetIp", internetIp);
+		data.put("internetPort", internetPort);
+		data.put("intranetIp", intranetIp);
+		data.put("intranetPort", intranetPort);
+		data.put("expirationDate", expirationDate);
+		
+		try {
+			resourceService.addRds(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/Rds/Del",method=RequestMethod.POST)
+	public ModelAndView rdsDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delRds(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/Rds/{id}",method=RequestMethod.GET)
+	public ModelAndView rdsDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		RdsResource resource = null;
+		try{
+			resource = resourceService.getRds(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
+	
+	@Transactional
 	@RequestMapping(value="/CommonDb/Add",method=RequestMethod.POST)
 	public ModelAndView commonDbAddAction(
 			@RequestParam("commonDbAddName") String name,
@@ -271,6 +371,138 @@ public class ResourceController {
 		CommonDbResource resource = null;
 		try{
 			resource = resourceService.getCommonDb(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
+
+	@Transactional
+	@RequestMapping(value="/RdsDb/Add",method=RequestMethod.POST)
+	public ModelAndView rdsDbAddAction(
+			@RequestParam("rdsDbAddName") String name,
+			@RequestParam("rdsDbAddDescription") String description,
+			@RequestParam("rdsDbAddDbName") String dbName,
+			@RequestParam("rdsDbAddDbUser") String dbUser,
+			@RequestParam("rdsDbAddDbPwd") String dbPwd,
+			@RequestParam("rdsDbAddDbRds") String rdsId,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("dbName", dbName);
+		data.put("dbUser", dbUser);
+		data.put("dbPwd", dbPwd);
+		data.put("rdsId", rdsId);
+		
+		try {
+			resourceService.addRdsDb(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/RdsDb/Del",method=RequestMethod.POST)
+	public ModelAndView rdsDbDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delRdsDb(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/RdsDb/{id}",method=RequestMethod.GET)
+	public ModelAndView rdsDbDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		RdsDbResource resource = null;
+		try{
+			resource = resourceService.getRdsDb(id);
+			model.put("info", mGson.toJson(resource));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			model.put("info", ex.getMessage());			
+		}
+		return new ModelAndView("responsePage", model);
+	}
+
+	@Transactional
+	@RequestMapping(value="/Redis/Add",method=RequestMethod.POST)
+	public ModelAndView redisAddAction(
+			@RequestParam("redisAddName") String name,
+			@RequestParam("redisAddDescription") String description,
+			@RequestParam("redisAddInstanceID") String instanceID,
+			@RequestParam("redisAddArea") String area,
+			@RequestParam("redisAddHost") String host,
+			@RequestParam("redisAddPort") String port,
+			@RequestParam("redisAddPwd") String pwd,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name", name);
+		data.put("description", description);
+		data.put("instanceID", instanceID);
+		data.put("area", area);
+		data.put("host", host);
+		data.put("port", port);
+		data.put("pwd", pwd);
+		
+		try {
+			resourceService.addRedis(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/Redis/Del",method=RequestMethod.POST)
+	public ModelAndView redisDel(@RequestParam("delId") String id,
+			Map<String, Object> model) {
+		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id", id);
+		
+		try {
+			resourceService.delRedis(data);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());			
+		}
+		
+		return Global.getResponseData(0, "");
+	}
+	
+	@Transactional
+	@RequestMapping(value="/Redis/{id}",method=RequestMethod.GET)
+	public ModelAndView redisDetail(@PathVariable String id, Map<String, Object> model) {
+		
+		RedisResource resource = null;
+		try{
+			resource = resourceService.getRedis(id);
 			model.put("info", mGson.toJson(resource));
 		}catch(Exception ex) {
 			ex.printStackTrace();

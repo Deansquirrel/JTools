@@ -16,8 +16,14 @@
         <c:url var="urlStrCustomerDel" value="/Resource/Customer/Del/" />
         <c:url var="urlStrEcsDetail" value="/Resource/Ecs/" />
         <c:url var="urlStrEcsDel" value="/Resource/Ecs/Del/" />
+        <c:url var="urlStrRdsDetail" value="/Resource/Rds/" />
+        <c:url var="urlStrRdsDel" value="/Resource/Rds/Del/" />
         <c:url var="urlStrCommonDbDetail" value="/Resource/CommonDb/" />
         <c:url var="urlStrCommonDbDel" value="/Resource/CommonDb/Del/" />
+        <c:url var="urlStrRdsDbDetail" value="/Resource/RdsDb/" />
+        <c:url var="urlStrRdsDbDel" value="/Resource/RdsDb/Del/" />
+        <c:url var="urlStrRedisDetail" value="/Resource/Redis/" />
+        <c:url var="urlStrRedisDel" value="/Resource/Redis/Del/" />
         <c:url var="urlStrExceptionLessDetail" value="/Resource/ExceptionLess/" />
         <c:url var="urlStrExceptionLessDel" value="/Resource/ExceptionLess/Del/" />
         <c:url var="urlStrMongoDBDetail" value="/Resource/MongoDB/" />
@@ -62,12 +68,36 @@
 	                          		<a href="javascript:frmDelSubmit('${urlStrEcsDel }' ,'${rlist.id }')"><span>删除</span></a>
 	                      		</div>
                  			</c:when>
+                 			<c:when test="${rlist.type == 'RDS' }">
+                 				<div class="col">
+	                          		<a href="${urlStrRdsDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrRdsDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
                  			<c:when test="${rlist.type == 'CommonDb' }">
                  				<div class="col">
 	                          		<a href="${urlStrCommonDbDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
 	                      		</div>
 	                      		<div class="col">
 	                          		<a href="javascript:frmDelSubmit('${urlStrCommonDbDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'RdsDb' }">
+                 				<div class="col">
+	                          		<a href="${urlStrRdsDbDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrRdsDbDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
+                 			<c:when test="${rlist.type == 'Redis' }">
+                 				<div class="col">
+	                          		<a href="${urlStrRedisDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrRedisDel }' ,'${rlist.id }')"><span>删除</span></a>
 	                      		</div>
                  			</c:when>
                  			<c:when test="${rlist.type == 'ExceptionLess' }">
@@ -114,10 +144,13 @@
                         <div id="addTypeMenu" class="dropdown-menu" >
                             <a class="dropdown-item" href="javascript:addTypeChanged('customer')">客户</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('ecs')">ECS</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('rds')">RDS</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('commondb')">数据库（普通）</a>
-                            <a class="dropdown-item" href="javascript:addTypeChanged('exceptionless')">ExceptionLess</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('rdsdb')">数据库（RDS）</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('redis')">Redis</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('mongodb')">MongoDB</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('rabbitmq')">RabbitMQ</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('exceptionless')">ExceptionLess</a>
                         </div>
                     </div>
                 </div>
@@ -269,6 +302,76 @@
                 </div>
             </div>
         </form>
+        <form id="frm-rdsAdd" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="rdsAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddName"  name ="rdsAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddDescription" name="rdsAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddInstanceID" class="col-sm-2 col-form-label">实例ID</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddInstanceID" name="rdsAddInstanceID" placeholder="实例ID">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddArea" class="col-sm-2 col-form-label">所在区</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddArea" name="rdsAddArea" placeholder="所在区">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddDbType" class="col-sm-2 col-form-label">系统类型</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddDbType" name="rdsAddDbType" placeholder="系统类型，如SQL Server 2008 R2">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddInternetIp" class="col-sm-2 col-form-label">外网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddInternetIp" name="rdsAddInternetIp" placeholder="外网IP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddInternetPort" class="col-sm-2 col-form-label">外网端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddInternetPort" name="rdsAddInternetPort" placeholder="外网端口，默认3433">
+                </div>
+            </div>
+			<div class="form-group row">
+                <label for="rdsAddIntranetIp" class="col-sm-2 col-form-label">内网IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddIntranetIp" name="rdsAddIntranetIp" placeholder="内网IP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddIntranetPort" class="col-sm-2 col-form-label">内网端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsAddIntranetPort" name="rdsAddIntranetPort" placeholder="内网端口，默认3433">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsAddExpirationDate" class="col-sm-2 col-form-label">过期日期</label>
+                <div class="col-sm-10 input-group">
+                    <input type="text" class="form-control form_datetime" id="rdsAddExpirationDate"  name="rdsAddExpirationDate" placeholder="过期日期，格式如 2050-12-31">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-rds" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-rds" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
         <form id="frm-commonDbAdd" class="margin50 d-none">
             <div class="form-group row">
                 <label for="commonDbAddName" class="col-sm-2 col-form-label">名称</label>
@@ -318,6 +421,114 @@
                 </div>
                 <div class="col">
                     <button id="submit-commondb" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
+        <form id="frm-rdsDbAdd" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="rdsDbAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsDbAddName"  name ="rdsDbAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsDbAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsDbAddDescription" name="rdsDbAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsDbAddDbName" class="col-sm-2 col-form-label">数据库名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsDbAddDbName" name="rdsDbAddDbName" placeholder="数据库名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsDbAddDbUser" class="col-sm-2 col-form-label">数据库登录名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsDbAddDbUser" name="rdsDbAddDbUser" placeholder="数据库登录名">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="rdsDbAddDbPwd" class="col-sm-2 col-form-label">数据库登录密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="rdsDbAddDbPwd" name="rdsDbAddDbPwd" placeholder="数据库登录密码">
+                </div>
+            </div>
+             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">所在RDS</label>
+                <div class="col-sm-10">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupRdsDbAddDbRds"  type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            请选择
+                        </button>
+                        <div class="dropdown-menu">
+	                        <c:forEach items="${rdsList }" var="rds">
+						        <a class="dropdown-item" href="javascript:chooseRds_RdsDbAdd('${rds.key }','${rds.value }')">${rds.value }</a>
+						   </c:forEach>
+                        </div>
+                        <input id="rdsDbAddDbRds" type="hidden" name="rdsDbAddDbRds" value="" />
+                    </div>
+                </div>
+             </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-rdsdb" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-rdsdb" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
+        <form id="frm-redisAdd" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="redisAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddName"  name ="redisAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddDescription" name="redisAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddInstanceID" class="col-sm-2 col-form-label">实例ID</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddInstanceID" name="redisAddInstanceID" placeholder="实例ID">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddArea" class="col-sm-2 col-form-label">所在区</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddArea" name="redisAddArea" placeholder="所在区">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddHost" class="col-sm-2 col-form-label">连接地址</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddHost" name="redisAddHost" placeholder="连接地址">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddPort" class="col-sm-2 col-form-label">连接端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddPort" name="redisAddPort" placeholder="连接端口">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="redisAddPwd" class="col-sm-2 col-form-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="redisAddPwd" name="redisAddPwd" placeholder="密码">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-redis" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-redis" type="button" class="btn btn-primary btn-block">Submit</button>
                 </div>
             </div>
         </form>
@@ -441,7 +652,7 @@
             <div class="form-group row">
                 <label for="rabbitmqAddPort" class="col-sm-2 col-form-label">端口</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="rabbitmqAddPort" name="rabbitmqAddPort" placeholder="端口，默认27017">
+                    <input type="text" class="form-control" id="rabbitmqAddPort" name="rabbitmqAddPort" placeholder="端口，默认5672">
                 </div>
             </div>
             <div class="form-group row">
@@ -471,7 +682,10 @@
 <script src="${urlStr }"></script>
 <c:url var="urlStrCustomerAdd" value="/Resource/Customer/Add" />
 <c:url var="urlStrEcsAdd" value="/Resource/Ecs/Add" />
+<c:url var="urlStrRdsAdd" value="/Resource/Rds/Add" />
 <c:url var="urlStrCommonDbAdd" value="/Resource/CommonDb/Add" />
+<c:url var="urlStrRdsDbAdd" value="/Resource/RdsDb/Add" />
+<c:url var="urlStrRedisAdd" value="/Resource/Redis/Add" />
 <c:url var="urlStrExceptionLessAdd" value="/Resource/ExceptionLess/Add" />
 <c:url var="urlStrMongoDBAdd" value="/Resource/MongoDB/Add" />
 <c:url var="urlStrRabbitMQAdd" value="/Resource/RabbitMQ/Add" />
@@ -485,8 +699,20 @@
 	    frmAddSubmit("${urlStrEcsAdd }","frm-ecsAdd","ecs");
 	});
 	
+	$("#submit-rds").click(function(){
+	    frmAddSubmit("${urlStrRdsAdd }","frm-rdsAdd","rds");
+	});
+	
 	$("#submit-commondb").click(function(){
 	    frmAddSubmit("${urlStrCommonDbAdd }","frm-commonDbAdd","commondb");
+	});
+	
+	$("#submit-rdsdb").click(function(){
+	    frmAddSubmit("${urlStrRdsDbAdd }","frm-rdsDbAdd","rdsdb");
+	});
+	
+	$("#submit-redis").click(function(){
+	    frmAddSubmit("${urlStrRedisAdd }","frm-redisAdd","redis");
 	});
 	
 	$("#submit-exceptionless").click(function(){

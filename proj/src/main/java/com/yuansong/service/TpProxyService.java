@@ -43,7 +43,7 @@ public class TpProxyService {
 			case 0:
 				CommonDbResource commonDbResource =  null;
 				try {
-					commonDbResource =  resourceService.getDb(tpProxyResource.getCrmDataCenterDbId());					
+					commonDbResource =  resourceService.getCommonDb(tpProxyResource.getCrmDataCenterDbId());					
 				}catch(Exception ex) {
 					logger.debug(ex.getMessage());
 					ex.printStackTrace();
@@ -54,7 +54,7 @@ public class TpProxyService {
 			case 1:
 				RdsDbResource rdsDbResource = null;
 				try {
-					rdsDbResource = resourceService.getRds("F775F94B-2A21-4755-AF31-864859880786");
+					rdsDbResource = resourceService.getRdsDb("F775F94B-2A21-4755-AF31-864859880786");
 				}catch(Exception ex) {
 					logger.debug(ex.getMessage());
 					ex.printStackTrace();

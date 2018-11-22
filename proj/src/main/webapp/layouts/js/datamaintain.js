@@ -48,11 +48,29 @@ function addTypeChanged(id){
             divFormBlock("frm-ecsAdd");
             $("#ecsAddName").focus();
             break;
+        case "rds":
+            $("#btnGroupAddType").text("RDS");
+            divFormNone();
+            divFormBlock("frm-rdsAdd");
+            $("#rdsAddName").focus();
+            break;
         case "commondb":
             $("#btnGroupAddType").text("数据库（普通）");
             divFormNone();
             divFormBlock("frm-commonDbAdd");
             $("#commonDbAddName").focus();
+            break;
+        case "rdsdb":
+            $("#btnGroupAddType").text("数据库（RDS）");
+            divFormNone();
+            divFormBlock("frm-rdsDbAdd");
+            $("#rdsDbAddName").focus();
+            break;
+        case "redis":
+            $("#btnGroupAddType").text("Redis");
+            divFormNone();
+            divFormBlock("frm-redisAdd");
+            $("#redisAddName").focus();
             break;
         case "exceptionless":
             $("#btnGroupAddType").text("ExceptionLess");
@@ -79,7 +97,16 @@ function addTypeChanged(id){
 
 
 function divFormNone(){
-    const frmList = new Array("frm-customerAdd","frm-ecsAdd","frm-commonDbAdd","frm-exceptionless","frm-mongodb");
+    const frmList = new Array(
+    		"frm-customerAdd",
+    		"frm-ecsAdd",
+    		"frm-rdsAdd",
+    		"frm-commonDbAdd",
+    		"frm-rdsDbAdd",
+    		"frm-redisAdd",
+    		"frm-exceptionless",
+    		"frm-mongodb",
+    		"frm-rabbitmq");
 
     for(let index in frmList){
         $("#" + frmList[index]).removeClass("d-block");
@@ -98,7 +125,10 @@ function choseMisType(id){
     $('#customerAddMistype').val(id);
 }
 
-
+function chooseRds_RdsDbAdd(id,name){
+	$('#btnGroupRdsDbAddDbRds').text(name);
+	$('#rdsDbAddDbRds').val(id);
+}
 
 function frmAddSubmit(frmurl,frmname,type){
 	$.ajax({
@@ -132,8 +162,17 @@ function frmAddSubmit(frmurl,frmname,type){
 	                    	case "ecs":
 	                    		resetFrm_EcsAdd();
 	                    		break;
+	                    	case "rds":
+	                    		resetFrm_RdsAdd();
+	                    		break;
 	                    	case "commondb":
 	                    		resetFrm_CommonDbAdd();
+	                    		break;
+	                    	case "rdsdb":
+	                    		resetFrm_RdsDbAdd();
+	                    		break;
+	                    	case "rdsdb":
+	                    		resetFrm_RedisAdd();
 	                    		break;
 	                    	case "exceptionless":
 	                    		resetFrm_ExceptionLessAdd();
@@ -275,6 +314,20 @@ function resetFrm_EcsAdd(){
     $("#ecsAddName").focus();
 }
 
+function resetFrm_RdsAdd(){
+	$("#rdsAddName").val("");
+    $("#rdsAddDescription").val("");
+    $("#rdsAddInstanceID").val("");
+    $("#rdsAddArea").val("");
+    $("#rdsAddDbType").val("");
+    $("#rdsAddInternetIp").val("");
+    $("#rdsAddInternetPort").val("");
+    $("#rdsAddIntranetIp").val("");
+    $("#rdsAddIntranetPort").val("");
+    $("#rdsAddExpirationDate").val("");
+    $("#rdsAddName").focus();
+}
+
 function resetFrm_CommonDbAdd(){
 	$("#commonDbAddName").val("");
     $("#commonDbAddDescription").val("");
@@ -284,6 +337,28 @@ function resetFrm_CommonDbAdd(){
     $("#commonDbAddAddress").val("");
     $("#commonDbAddPort").val("");
 	$("#commonDbAddName").focus();
+}
+
+function resetFrm_RdsDbAdd(){
+	$("#rdsDbAddName").val("");
+    $("#rdsDbAddDescription").val("");
+    $("#rdsDbAddDbName").val("");
+    $("#rdsDbAddDbUser").val("");
+    $("#rdsDbAddDbPwd").val("");
+    $("#rdsDbAddDbRds").val("");
+    chooseRds_RdsDbAdd("","请选择");
+	$("#rdsDbAddName").focus();
+}
+
+function resetFrm_RedisAdd(){
+	$("#redisAddName").val("");
+    $("#redisAddDescription").val("");
+    $("#redisAddInstanceID").val("");
+    $("#redisAddArea").val("");
+    $("#redisAddHost").val("");
+    $("#redisAddPort").val("");
+    $("#redisAddPwd").val("");
+	$("#redisAddName").focus();
 }
 
 function resetFrm_ExceptionLessAdd(){
@@ -325,8 +400,20 @@ $("#reset-ecs").click(function(){
 	resetFrm_EcsAdd();
 });
 
+$("#reset-rds").click(function(){
+	resetFrm_RdsAdd();
+});
+
 $("#reset-commondb").click(function(){
 	resetFrm_CommonDbAdd();
+});
+
+$("#reset-rdsdb").click(function(){
+	resetFrm_RdsDbAdd();
+});
+
+$("#reset-redis").click(function(){
+	resetFrm_RedisAdd();
 });
 
 $("#reset-exceptionless").click(function(){

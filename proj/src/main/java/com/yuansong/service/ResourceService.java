@@ -20,6 +20,8 @@ import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.resource.MongoDBResource;
 import com.yuansong.resource.RabbitMQResource;
 import com.yuansong.resource.RdsDbResource;
+import com.yuansong.resource.RdsResource;
+import com.yuansong.resource.RedisResource;
 
 @Service
 public class ResourceService {
@@ -105,7 +107,7 @@ public class ResourceService {
 	 * @throws Exception
 	 */
 	public List<CustomerResource> getCustomerList() throws Exception{
-		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Customer/Get");
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Customer/List");
 		InterfaceResult<List<CustomerResource>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<List<CustomerResource>>>(){}.getType());
 		if(info.getErrcode() != 0) {
 			logger.error(info.getErrmsg());
@@ -166,7 +168,73 @@ public class ResourceService {
 	}
 	
 	/***
-	 * 添加普通数据库
+	 * 添加RDS
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addRds(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Rds/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+		
+	/***
+	 * 删除RDS
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delRds(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Rds/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个RDS信息
+	 * @param id
+	 * @return
+	 */
+	public RdsResource getRds(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Rds/" + id);
+		logger.debug(result);
+		InterfaceResult<RdsResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RdsResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取RDS资源列表
+	 * @return
+	 * @throws Exception
+	 */
+	public List<RdsResource> getRdsList() throws Exception{
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Rds/List");
+		InterfaceResult<List<RdsResource>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<List<RdsResource>>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 添加CommonDb
 	 * @param data
 	 * @return
 	 * @throws Exception
@@ -183,7 +251,7 @@ public class ResourceService {
 	}
 	
 	/***
-	 * 删除普通数据库
+	 * 删除CommonDb
 	 * @param data
 	 * @return
 	 * @throws Exception
@@ -216,6 +284,111 @@ public class ResourceService {
 		}
 		return info.getData();
 	}
+	
+	/***
+	 * 添加RdsDb
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addRdsDb(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/RdsDb/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除RdsDb
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delRdsDb(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/RdsDb/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个RdsDb信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public RdsDbResource getRdsDb(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/RdsDb/" + id);
+		logger.debug(result);
+		InterfaceResult<RdsDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RdsDbResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 添加Redis
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int addRedis(Map<String, String> data) throws Exception {
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Redis/Add", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 删除Redis
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public int delRedis(Map<String, String> data) throws Exception {
+		logger.debug(mGson.toJson(data));
+		String result = httpUtils.httpPostJson(systemConfig.getUrl() + "/Resource/Redis/Del", mGson.toJson(data));
+		
+		InterfaceResult<Integer> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Integer>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	/***
+	 * 获取单个Redis信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public RedisResource getRedis(String id)  throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Redis/" + id);
+		logger.debug(result);
+		InterfaceResult<RedisResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RedisResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
 	
 	/***
 	 * 添加ExceptionLess
@@ -269,7 +442,6 @@ public class ResourceService {
 		return info.getData();
 	}
 	
-
 	/***
 	 * 添加MongoDB
 	 * @param data
@@ -322,7 +494,6 @@ public class ResourceService {
 		return info.getData();
 	}
 	
-
 	/***
 	 * 添加RabbitMQ
 	 * @param data
@@ -382,29 +553,18 @@ public class ResourceService {
 	
 	
 	
+
 	
-	
-	public RdsDbResource getRds(String id) throws Exception{
-		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/Rds/" + id);
-//		return this.getResource(result);
-		InterfaceResult<RdsDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RdsDbResource>>(){}.getType());
-		if(info.getErrcode() != 0) {
-			logger.error(info.getErrmsg());
-			throw new Exception(info.getErrmsg());
-		}
-		return info.getData();
-	}
-	
-	public CommonDbResource getDb(String id) throws Exception{
-		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/DB/" + id);
-//		return this.getResource(result);
-		InterfaceResult<CommonDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<CommonDbResource>>(){}.getType());
-		if(info.getErrcode() != 0) {
-			logger.error(info.getErrmsg());
-			throw new Exception(info.getErrmsg());
-		}
-		return info.getData();
-	}
+//	public CommonDbResource getDb(String id) throws Exception{
+//		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/DB/" + id);
+////		return this.getResource(result);
+//		InterfaceResult<CommonDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<CommonDbResource>>(){}.getType());
+//		if(info.getErrcode() != 0) {
+//			logger.error(info.getErrmsg());
+//			throw new Exception(info.getErrmsg());
+//		}
+//		return info.getData();
+//	}
 	
 //	private <T> T getResource(String url) throws Exception{
 //		String result = httpUtils.httpGet(url);
