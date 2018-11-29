@@ -90,6 +90,12 @@ function addTypeChanged(id){
             divFormBlock("frm-rabbitmq");
             $("#rabbitmqAddName").focus();
             break;
+        case "tpproxy":
+            $("#btnGroupAddType").text("TpPorxy");
+            divFormNone();
+            divFormBlock("frm-tpproxy");
+            $("#tpproxyAddName").focus();
+            break;
          default:
              console.log("error");
     }
@@ -106,6 +112,7 @@ function divFormNone(){
     		"frm-redisAdd",
     		"frm-exceptionless",
     		"frm-mongodb",
+    		"frm-tpproxy",
     		"frm-rabbitmq");
 
     for(let index in frmList){
@@ -182,6 +189,9 @@ function frmAddSubmit(frmurl,frmname,type){
 	                    		break;
 	                    	case "rabbitmq":
 	                    		resetFrm_RabbitMQAdd();
+	                    		break;
+	                    	case "tpproxy":
+	                    		resetFrm_TpProxyAdd();
 	                    		break;
                     	}
                     }).catch(swal.noop);
@@ -392,6 +402,14 @@ function resetFrm_RabbitMQAdd(){
 	$("#rabbitmqAddName").focus();
 }
 
+function resetFrm_TpProxyAdd(){
+	$("#tpproxyAddName").val("");
+    $("#tpproxyAddDescription").val("");
+    $("#tpproxyAddUrl").val("");
+    $("#tpproxyAddPort").val("");
+	$("#tpproxyAddName").focus();
+}
+
 $("#reset-customer").click(function(){
     resetFrm_CustomerAdd();
 });
@@ -426,4 +444,8 @@ $("#reset-mongodb").click(function(){
 
 $("#reset-rabbitmq").click(function(){
 	resetFrm_RabbitMQAdd();
+});
+
+$("#reset-tpproxy").click(function(){
+	resetFrm_TpProxyAdd();
 });

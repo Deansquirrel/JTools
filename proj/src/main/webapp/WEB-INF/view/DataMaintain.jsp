@@ -30,6 +30,8 @@
         <c:url var="urlStrMongoDBDel" value="/Resource/MongoDB/Del/" />
         <c:url var="urlStrRabbitMQDetail" value="/Resource/RabbitMQ/" />
         <c:url var="urlStrRabbitMQDel" value="/Resource/RabbitMQ/Del/" />
+        <c:url var="urlStrTpProxyDetail" value="/Resource/TpProxy/" />
+        <c:url var="urlStrTpProxyDel" value="/Resource/TpProxy/Del/" />
  
         <table class="table table-hover">
             <thead>
@@ -124,6 +126,14 @@
 	                          		<a href="javascript:frmDelSubmit('${urlStrRabbitMQDel }' ,'${rlist.id }')"><span>删除</span></a>
 	                      		</div>
                  			</c:when>
+                 			<c:when test="${rlist.type == 'TpProxy' }">
+                 				<div class="col">
+	                          		<a href="${urlStrTpProxyDetail }${rlist.id }" target="_blank"><span>详细信息</span></a>
+	                      		</div>
+	                      		<div class="col">
+	                          		<a href="javascript:frmDelSubmit('${urlStrTpProxyDel }' ,'${rlist.id }')"><span>删除</span></a>
+	                      		</div>
+                 			</c:when>
                  		</c:choose>
                 		</div>
                 	</td>
@@ -151,6 +161,7 @@
                             <a class="dropdown-item" href="javascript:addTypeChanged('mongodb')">MongoDB</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('rabbitmq')">RabbitMQ</a>
                             <a class="dropdown-item" href="javascript:addTypeChanged('exceptionless')">ExceptionLess</a>
+                            <a class="dropdown-item" href="javascript:addTypeChanged('tpproxy')">TpProxy</a>
                         </div>
                     </div>
                 </div>
@@ -676,6 +687,70 @@
                 </div>
             </div>
         </form>
+    	<form id="frm-tpproxy" class="margin50 d-none">
+            <div class="form-group row">
+                <label for="mongodbAddName" class="col-sm-2 col-form-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="tpproxyAddName"  name ="tpproxyAddName" placeholder="名称">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tpproxyAddDescription" class="col-sm-2 col-form-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="tpproxyAddDescription" name="tpproxyAddDescription" placeholder="描述">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tpproxyAddUrl" class="col-sm-2 col-form-label">URL</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="tpproxyAddUrl" name="tpproxyAddUrl" placeholder="URL">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tpproxyAddPort" class="col-sm-2 col-form-label">Port</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="tpproxyAddPort" name="tpproxyAddPort" placeholder="Port">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tpproxyAddCrmDataCenterDb" class="col-sm-2 col-form-label">CrmDataCenterDb</label>
+                <div class="col-sm-10">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupAddType" onclick="$('.dropdown-toggle').dropdown()" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            请选择
+                        </button>
+                        <div id="addTypeMenu" class="dropdown-menu" >
+                        	<c:forEach var="db"  items="${dbList }">
+                        		<a class="dropdown-item" href="javascript:addTypeChanged('${db.key }')">${db.value }</a>
+                        	</c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tpproxyAddCrmDataCenterDb" class="col-sm-2 col-form-label">TpO2OProxyConfigDb</label>
+                <div class="col-sm-10">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupAddType" onclick="$('.dropdown-toggle').dropdown()" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            请选择
+                        </button>
+                        <div id="addTypeMenu" class="dropdown-menu" >
+                        	<c:forEach var="db"  items="${dbList }">
+                        		<a class="dropdown-item" href="javascript:addTypeChanged('${db.key }')">${db.value }</a>
+                        	</c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <button id="reset-tpproxy" type="button" class="btn btn-primary btn-block">Reset</button>
+                </div>
+                <div class="col">
+                    <button id="submit-tpproxy" type="button" class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <c:url var="urlStr" value="/layouts/js/datamaintain.js" />
@@ -689,6 +764,7 @@
 <c:url var="urlStrExceptionLessAdd" value="/Resource/ExceptionLess/Add" />
 <c:url var="urlStrMongoDBAdd" value="/Resource/MongoDB/Add" />
 <c:url var="urlStrRabbitMQAdd" value="/Resource/RabbitMQ/Add" />
+<c:url var="urlStrTpProxyAdd" value="/Resource/TpProxy/Add" />
 <script type="text/javascript">
 	
 	$("#submit-customer").click(function(){
@@ -725,6 +801,10 @@
 	
 	$("#submit-rabbitmq").click(function(){
 	    frmAddSubmit("${urlStrRabbitMQAdd }","frm-rabbitmq","rabbitmq");
+	});
+	
+	$("#submit-tpproxy").click(function(){
+	    frmAddSubmit("${urlStrTpProxyAdd }","frm-tpproxy","tpproxy");
 	});
 	
 	topMenuNone();

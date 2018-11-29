@@ -42,6 +42,7 @@ public class ResourceService {
 	 */
 	public Map<String, List<BaseResource>> getBaseResourceList() throws Exception{
 		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/List");
+		logger.debug(result);
 		InterfaceResult<Map<String, List<BaseResource>>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<Map<String, List<BaseResource>>>>(){}.getType());
 		if(info.getErrcode() != 0) {
 			logger.error(info.getErrmsg());
@@ -285,6 +286,17 @@ public class ResourceService {
 		return info.getData();
 	}
 	
+	public List<CommonDbResource> getCommonDbList() throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/CommonDb/List");
+		logger.debug(result);
+		InterfaceResult<List<CommonDbResource>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<List<CommonDbResource>>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
 	/***
 	 * 添加RdsDb
 	 * @param data
@@ -330,6 +342,17 @@ public class ResourceService {
 		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/RdsDb/" + id);
 		logger.debug(result);
 		InterfaceResult<RdsDbResource> info = mGson.fromJson(result, new TypeToken<InterfaceResult<RdsDbResource>>(){}.getType());
+		if(info.getErrcode() != 0) {
+			logger.error(info.getErrmsg());
+			throw new Exception(info.getErrmsg());
+		}
+		return info.getData();
+	}
+	
+	public List<RdsDbResource> getRdsDbList() throws Exception {
+		String result = httpUtils.httpGet(systemConfig.getUrl() + "/Resource/RdsDb/List");
+		logger.debug(result);
+		InterfaceResult<List<RdsDbResource>> info = mGson.fromJson(result, new TypeToken<InterfaceResult<List<RdsDbResource>>>(){}.getType());
 		if(info.getErrcode() != 0) {
 			logger.error(info.getErrmsg());
 			throw new Exception(info.getErrmsg());
